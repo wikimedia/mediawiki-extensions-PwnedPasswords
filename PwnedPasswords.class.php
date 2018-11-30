@@ -36,6 +36,8 @@ class PwnedPasswords {
 	 * Fetches the list of hashes for this hash prefix
 	 */
 	protected function fetchFile( $prefix ) {
+		# The files are actually stored in two levels
+		$prefix = substr( $prefix, 0, 2 ) . "/$prefix";
 		if ( $this->cache ) {
 			$cacheFile = $this->cache . "/$prefix";
 			if ( file_exists( $cacheFile ) ) {
@@ -48,6 +50,10 @@ class PwnedPasswords {
 
 		$data = file_get_contents( $this->url . "/$prefix" );
 		if ( $data && $this->cache ) {
+			// Create the cache folder if needed
+			if ( !is_dir( dirname( $cacheFile ) ) ) {
+				mkdir( dirname( $cacheFile ), 0766, true );
+			}
 			file_put_contents( $cacheFile, $data );
 		}
 
