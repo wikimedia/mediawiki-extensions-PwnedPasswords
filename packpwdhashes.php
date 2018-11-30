@@ -36,5 +36,6 @@ while ( ( $line = fgets( $input ) ) !== false ) {
 }
 
 fclose( $input );
-if ( $output )
+if ( $output ) {
 	fclose( $output );
+}

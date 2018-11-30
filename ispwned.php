@@ -12,5 +12,6 @@ $pwnd = new PwnedPasswords();
 $ispwned = $pwnd->checkPassword( $password );
 
 if ( $ispwned ) {
-	echo "The password «{$password}» has been listed on a data breach.\nYou should avoid using this string as a password anywhere.\n\n";
+	echo "The password «{$password}» has been listed on a data breach.\n" .
+		"You should avoid using this string as a password anywhere.\n\n";
 }
