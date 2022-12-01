@@ -86,7 +86,7 @@ class PwnedPasswords {
 		if ( $data[$tailLength] == ':' ) {
 			// The hashes have appearance counts,
 			// so we will have to perform a linear search
-			$n = strpos( $data, "${hashTail}:" );
+			$n = strpos( $data, "{$hashTail}:" );
 
 			return $n !== false;
 		}
