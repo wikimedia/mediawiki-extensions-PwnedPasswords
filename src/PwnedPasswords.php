@@ -2,10 +2,13 @@
 
 class PwnedPasswords {
 
-	const HASH_LENGTH = 40;
-	const PREFIX_LENGTH = 4;
+	public const HASH_LENGTH = 40;
+	public const PREFIX_LENGTH = 4;
+	private string $cache;
+	private string $url;
+	private bool $binary;
 
-	function __construct() {
+	public function __construct() {
 		# TODO: Read these values from config
 		$this->url = "https://pwnedpasswords.wikimedia.es/4";
 		$this->cache = __DIR__ . "/cache";
@@ -14,6 +17,7 @@ class PwnedPasswords {
 
 	/**
 	 * @param string $password
+	 *
 	 * @return bool
 	 */
 	public function checkPassword( $password ) {
@@ -25,7 +29,9 @@ class PwnedPasswords {
 	 * that appeared on a data breach.
 	 * This function is useful mainly for testing, generally you
 	 * should use checkPassword() instead.
+	 *
 	 * @param string $sha1
+	 *
 	 * @return bool
 	 */
 	public function checkPasswordHash( $sha1 ) {
@@ -40,8 +46,10 @@ class PwnedPasswords {
 
 	/**
 	 * Fetches the list of hashes for this hash prefix
+	 *
 	 * @param string $prefix
-	 * @return array
+	 *
+	 * @return string
 	 */
 	protected function fetchFile( $prefix ) {
 		# The files are actually stored in two levels
@@ -71,9 +79,11 @@ class PwnedPasswords {
 	/**
 	 * Performs a binary search for the given hash tail in
 	 * the file whose contents are provided in $data
+	 *
 	 * @param string $filename
-	 * @param array $data
+	 * @param string $data
 	 * @param string $hashTail
+	 *
 	 * @return bool|string
 	 */
 	protected function findHashTail( $filename, $data, $hashTail ) {
@@ -108,6 +118,7 @@ class PwnedPasswords {
 	 * @param string $data
 	 * @param string $needle
 	 * @param int $blockSize
+	 *
 	 * @return string|bool
 	 */
 	protected static function binarySearch( $filename, $data, $needle, $blockSize ) {
@@ -122,7 +133,8 @@ class PwnedPasswords {
 
 		// Invariant: if present, $needle is in [$start, $end)
 		while ( $start < $end ) {
-			$pos = $start + ( ( $end - $start ) >> 1 ); // Integer division by 2
+			// Integer division by 2
+			$pos = $start + ( ( $end - $start ) >> 1 );
 			$n = substr_compare( $data, $needle, $pos * $blockSize, strlen( $needle ) );
 
 			if ( $n === 0 ) {
@@ -138,6 +150,7 @@ class PwnedPasswords {
 				throw new Exception( "Getting out of an impossible infinite loop" );
 			}
 		}
+
 		return false;
 	}
 }

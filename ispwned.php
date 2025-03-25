@@ -4,7 +4,7 @@ if ( PHP_SAPI != 'cli' ) {
 	die( "This script must be run from the command line." );
 }
 
-require_once __DIR__ . "/PwnedPasswords.class.php";
+require_once __DIR__ . "/src/PwnedPasswords.php";
 
 $password = $argv[1];
 
